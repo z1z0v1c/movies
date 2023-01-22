@@ -3,7 +3,6 @@ package dev.aleksandarzizovic.movies;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,11 +19,16 @@ public class MovieController {
     private MovieService movieService;
     @GetMapping
     public ResponseEntity<List<Movie>> allMovies() {
-        return new ResponseEntity<List<Movie>>(movieService.allMovies(), HttpStatus.OK);
+        return new ResponseEntity<>(movieService.allMovies(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Movie>> getMovie(@PathVariable ObjectId id) {
-        return new ResponseEntity<Optional<Movie>>(movieService.findMovieById(id), HttpStatus.OK);
+        return new ResponseEntity<>(movieService.findById(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/imdb/{imdbId}")
+    public ResponseEntity<Optional<Movie>> getMovie(@PathVariable String imdbId) {
+        return new ResponseEntity<>(movieService.findMovieByImdbId(imdbId), HttpStatus.OK);
     }
 }
